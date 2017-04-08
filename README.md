@@ -25,4 +25,8 @@ Then run it
 
 .... and then you don't really have anything but a serial interface that returns back what you sent it.
 
+You can use an app like Serial Bluetooth Terminal to test it.
+
+https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=en
+
 More soon.
