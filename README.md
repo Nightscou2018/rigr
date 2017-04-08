@@ -19,6 +19,10 @@ Then, install nodejs dependencies
 
 `npm install`
 
+Then run it
+
+`npm start`
+
 .... and then you don't really have anything but a serial interface that returns back what you sent it.
 
 More soon.
