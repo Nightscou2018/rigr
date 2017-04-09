@@ -6,9 +6,13 @@ server.listen(function (clientAddress) {
     server.on('data', function(buffer) {
         console.log('Received data from client: ' + buffer);
         
+        var received = JSON.parse(buffer.toString());
+        if (!received) received = {error:"Could not decode", raw: buffer.toString()};
+
+
         var testdata = {
             response: 'I do nothing yet', 
-            received: buffer
+            received: received
         }
 
         console.log('Sending data to the client');
