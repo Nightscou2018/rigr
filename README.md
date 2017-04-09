@@ -2,6 +2,9 @@
 
 The very early start of a bluetooth serial based control interface for OpenAPS
 
+Lots of dumb commits to be expected, as im using it to pull down code onto my edison.
+
+Current state reflects state of accompanying android app ... probably.
 
 # Setup
 
