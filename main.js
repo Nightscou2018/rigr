@@ -39,7 +39,7 @@ var good = (data) => {
 
 var respond = (value) => {
     var response = JSON.stringify(value);
-    console.log('[response]', respose);
+    console.log('[response]', response);
     server.write(new Buffer(response), function (err, bytesWritten) {
         if (err) {
             console.log('Error!');
