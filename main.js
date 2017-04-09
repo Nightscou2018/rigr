@@ -5,7 +5,10 @@ server.listen(function (clientAddress) {
     console.log('Client: ' + clientAddress + ' connected!');
     server.on('data', function(buffer) {
         console.log('Received data from client: ' + buffer);
-        
+
+        console.log(buffer);
+        console.log(buffer.toString());
+
         var received = JSON.parse(buffer.toString());
         if (!received) received = {error:"Could not decode", raw: buffer.toString()};
 
