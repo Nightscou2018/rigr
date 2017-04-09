@@ -1,32 +1,50 @@
-// Still just playing around
+const bsp = require('bluetooth-serial-port'),
+      server = new(bsp).BluetoothSerialPortServer();
 
-var server = new(require('bluetooth-serial-port')).BluetoothSerialPortServer();
+
+
 server.listen(function (clientAddress) {
     console.log('Client: ' + clientAddress + ' connected!');
     server.on('data', function(buffer) {
-        console.log('Received data from client: ' + buffer);
+        var receivedString = buffer.toString();
+        console.log("[received]", receivedString);
 
-        console.log(buffer);
-        console.log(buffer.toString());
-
-        var received = JSON.parse(buffer.toString());
-        if (!received) received = {error:"Could not decode", raw: buffer.toString()};
-
-
-        var testdata = {
-            response: 'I do nothing yet', 
-            received: received
+        // Atempt to decode JSON, and 
+        try {
+            var received = JSON.parse(receivedString);
+        } catch (e) {
+            return error("Could not decode",receivedString);
         }
+        
+        
+        return good({msg: "Valid JSON recieved. Do something with it eventually."});
 
-        console.log('Sending data to the client');
-        server.write(new Buffer(JSON.stringify(testdata)), function (err, bytesWritten) {
-            if (err) {
-                console.log('Error!');
-            } else {
-                console.log('Send ' + bytesWritten + 'b to the client!');
-            }
-        });
     });
 }, function(error){
 	console.error("Something wrong happened!:" + error);
 },{});
+
+var error = (msg,data) => {
+    respond({ 
+        status: "error",
+        msg: msg, 
+        raw: data 
+    });
+}
+
+var good = (data) => {
+    data.status = "OK";
+    respond(data);
+}
+
+var respond = (value) => {
+    var response = JSON.stringify(value);
+    console.log('[response]', respose);
+    server.write(new Buffer(response), function (err, bytesWritten) {
+        if (err) {
+            console.log('Error!');
+        } else {
+            console.log('Send ' + bytesWritten + 'b to the client!');
+        }
+    });
+}
