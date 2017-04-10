@@ -12,13 +12,15 @@ On your edison, first follow the instructions for setting up bluetooth teatherin
 
 First, clone this repo:
 
-`cd ~/ && git clone https://github.com/applehat/btaps.git`
+`cd ~/ && git clone https://github.com/applehat/rigr.git`
 
 Next, make sure to install any dependencies:
 
 `sudo apt-get install build-essential libbluetooth-dev`
 
 Then, install nodejs dependencies
+
+`cd ~/rigr`
 
 `npm install`
 
