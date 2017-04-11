@@ -103,6 +103,13 @@ server.listen(function (clientAddress) {
                     return error(`The action type of ${runAction.type} is not valid.`);
                 break;
             }
+
+            for (var x in responseObj) {
+                try {
+                    responseObj[x] = JSON.parse(responseObj[x]);
+                } catch (e) { /* Dumb way of checking if its json. haha */ }
+            } 
+
         }
         return good(responseObj);
     });
