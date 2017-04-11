@@ -75,7 +75,7 @@ server.listen(function (clientAddress) {
                 var runAction = runthese[x];
                 
                 if (typeof runAction == "string" && typeof actions[runAction] !== "undefined") {
-                    runAction(actions[runAction]);  // Handle calling other actions by string alone
+                    runActions(actions[runAction]);  // Handle calling other actions by string alone
                 }
 
                 if (typeof runAction.type !== "string") {
