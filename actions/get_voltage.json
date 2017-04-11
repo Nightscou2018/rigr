@@ -5,12 +5,12 @@
         {
             "key": "battery_voltage",
             "type": "bash",
-            "command": "sudo ~/src/EdisonVoltage/voltage json batteryVoltage battery"
+            "command": "sudo ~/src/EdisonVoltage/voltage json | jq -r '.voltage'"
         },
         {
             "key": "battery_percent",
             "type": "bash",
-            "command": "sudo ~/src/EdisonVoltage/voltage json battery"
+            "command": "sudo ~/src/EdisonVoltage/voltage json | jq -r '.percentage'"
         }
     ]
 }
