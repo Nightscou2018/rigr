@@ -64,7 +64,7 @@ server.listen(function (clientAddress) {
         }
 
 
-        if (typeof curAction.actions == "string" || (typeof curActions.actions == "object" && !Array.isArray(curactions.actions))) {
+        if (typeof curAction.actions == "string" || (typeof curAction.actions == "object" && !Array.isArray(curAction.actions))) {
             curAction.actions = [ curAction.actions ];  // normalize single-action configs
         }
 
