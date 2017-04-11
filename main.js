@@ -91,6 +91,11 @@ server.listen(function (clientAddress) {
                     } catch (e) {
                         if (e.error) {
                             responseObj[runAction.key] = {error: e};
+                        } else {
+                            // fake news, donald trump, no errors, merica? 
+                            // No clue whats going on here.
+                            // @TODO: Why is this happening?
+                            responseObj[runAction.key] = e.stdout;
                         }
                     }
                 break;
