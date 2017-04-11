@@ -7,9 +7,9 @@ console.log('Initializing Rigr Server');
 console.log('Reading Action Config...');
 
 var actions = {};
-var actionsDir = fa.readdirSync('./actions/*.json');
+var actionsDir = fs.readdirSync('./actions/*.json');
 for (var file in actionsDir) {
-    var fileContents = fa.readFileSync(file);
+    var fileContents = fs.readFileSync(file);
     try {
         var parsed = JSON.parse(fileContents);
         if (typeof parsed.key !== "undefined") {
