@@ -52,7 +52,7 @@ server.listen(function (clientAddress) {
         } 
 
         // Was the recieved action a valid one?
-        if (typeof actions[receieved.action] == "undefined") {
+        if (typeof actions[received.action] == "undefined") {
             return error(`The action "${recieved.action}" was not valid.`);
         }
         
