@@ -16,6 +16,9 @@ for (var file in actionsDir) {
             var parsed = JSON.parse(fileContents);
             if (typeof parsed.key !== "undefined") {
                 actions[parsed.key] = parsed;
+            } else {
+                console.error(`Couldn't find key for loaded action`);
+                console.error(parsed);
             }
         } catch (e) {
             console.error(`Couldn't decode ${file}:`);
