@@ -1,7 +1,27 @@
 const bsp = require('bluetooth-serial-port'),
-      server = new(bsp).BluetoothSerialPortServer();
+      server = new(bsp).BluetoothSerialPortServer(),
+      fs = require('fs');
 
+console.log('Initializing Rigr Server');
 
+console.log('Reading Action Config...');
+
+var actions = {};
+var actionsDir = fa.readdirSync('./actions/*.json');
+for (var file in actionsDir) {
+    var fileContents = fa.readFileSync(file);
+    try {
+        var parsed = JSON.parse(fileContents);
+        if (typeof parsed.key !== "undefined") {
+            actions[parsed.key] = parsed;
+        }
+    } catch (e) {
+        console.error(`Couldn't decode ${file}:`);
+        console.error(e)
+    }
+}
+
+console.log(`Loaded ${actions.length} into memory.`);
 
 server.listen(function (clientAddress) {
     console.log('Client: ' + clientAddress + ' connected!');

@@ -1,0 +1,7 @@
+{
+    "name": "Get Rig Status",
+    "key": "get_rig_status",
+    "actions": [
+        "get_voltage"
+    ]
+}

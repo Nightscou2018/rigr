@@ -1,0 +1,11 @@
+{
+    "name": "Get Battery Voltage",
+    "key": "get_voltage",
+    "actions": [
+        {
+            "key": "voltage",
+            "type": "bash",
+            "command": "sudo ~/src/EdisonVoltage/voltage json batteryVoltage battery"
+        }
+    ]
+}
