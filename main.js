@@ -89,7 +89,9 @@ server.listen(function (clientAddress) {
                     try {
                         responseObj[runAction.key] = execSync(runAction.command,{ encoding: 'utf8' });
                     } catch (e) {
-                        responseObj[runAction.key] = {error: e};
+                        if (e.error) {
+                            responseObj[runAction.key] = {error: e};
+                        }
                     }
                 break;
                 default:
