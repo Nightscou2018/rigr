@@ -24,7 +24,9 @@ for (var file in actionsDir) {
     }
 }
 
-console.log(`Loaded ${actions.length} into memory.`);
+console.log(`Loaded actions into memory.`);
+
+console.debug(actions);
 
 server.listen(function (clientAddress) {
     console.log('Client: ' + clientAddress + ' connected!');
