@@ -7,7 +7,7 @@ console.log('Initializing Rigr Server');
 
 console.log('Reading Action Config...');
 
-var actions = {};
+var actions = [];
 var actionsDir = fs.readdirSync('actions');
 for (var file in actionsDir) {
     if (path.extname(file) == ".json") {
@@ -24,7 +24,7 @@ for (var file in actionsDir) {
             console.error(`Couldn't decode ${file}:`);
             console.error(e)
         }
-    }
+    } 
 }
 
 console.log(`Loaded actions into memory.`);
