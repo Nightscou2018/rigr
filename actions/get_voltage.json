@@ -1,11 +1,16 @@
 {
-    "name": "Get Battery Voltage",
-    "key": "get_voltage",
+    "name": "Get Battery Status",
+    "key": "get_battery",
     "actions": [
         {
-            "key": "voltage",
+            "key": "battery_voltage",
             "type": "bash",
             "command": "sudo ~/src/EdisonVoltage/voltage json batteryVoltage battery"
+        },
+        {
+            "key": "battery_percent",
+            "type": "bash",
+            "command": "sudo ~/src/EdisonVoltage/voltage json battery"
         }
     ]
 }
