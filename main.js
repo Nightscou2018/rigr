@@ -76,11 +76,12 @@ server.listen(function (clientAddress) {
                 
                 if (typeof runAction == "string" && typeof actions[runAction] !== "undefined") {
                     runActions(actions[runAction]);  // Handle calling other actions by string alone
+                    continue;
                 }
 
                 if (typeof runAction.type !== "string") {
                     console.log(runAction);
-                    return error(`An action passed had an invalid type (must be string)`, curAction);
+                    return error(`An action passed had an invalid type (must be string)`, runthese);
                 } 
 
                 switch (runAction.type) {
