@@ -70,48 +70,51 @@ server.listen(function (clientAddress) {
 
         var responseObj = {};
 
-        for (var x in curAction.actions) {
-            var runAction = curAction.actions[x];
-            
-            if (typeof runAction == "string" && typeof actions[runAction] !== "undefined") {
-                runAction = actions[runAction]; // Handle calling other actions by string alone
-            }
+        function runActions(runthese) {
+            for (var x in runthese) {
+                var runAction = runthese[x];
+                
+                if (typeof runAction == "string" && typeof actions[runAction] !== "undefined") {
+                    runAction(actions[runAction]);  // Handle calling other actions by string alone
+                }
 
-            if (typeof runAction.type !== "string") {
-                console.log(runAction);
-                return error(`An action passed had an invalid type (must be string)`, curAction);
-            } 
+                if (typeof runAction.type !== "string") {
+                    console.log(runAction);
+                    return error(`An action passed had an invalid type (must be string)`, curAction);
+                } 
 
-            switch (runAction.type) {
-                case "bash":
-                    if (typeof runAction.command !== "string") {
-                        return error(`The command passed was not a string, or no command passed.`,runAction);
-                    }
-                    try {
-                        responseObj[runAction.key] = execSync(runAction.command,{ encoding: 'utf8' });
-                    } catch (e) {
-                        if (e.error) {
-                            responseObj[runAction.key] = {error: e};
-                        } else {
-                            // fake news, donald trump, no errors, merica? 
-                            // No clue whats going on here.
-                            // @TODO: Why is this happening?
-                            responseObj[runAction.key] = e.stdout;
+                switch (runAction.type) {
+                    case "bash":
+                        if (typeof runAction.command !== "string") {
+                            return error(`The command passed was not a string, or no command passed.`,runAction);
                         }
-                    }
-                break;
-                default:
-                    return error(`The action type of ${runAction.type} is not valid.`);
-                break;
+                        try {
+                            responseObj[runAction.key] = execSync(runAction.command,{ encoding: 'utf8' });
+                        } catch (e) {
+                            if (e.error) {
+                                responseObj[runAction.key] = {error: e};
+                            } else {
+                                // fake news, donald trump, no errors, merica? 
+                                // No clue whats going on here.
+                                // @TODO: Why is this happening?
+                                responseObj[runAction.key] = e.stdout;
+                            }
+                        }
+                    break;
+                    default:
+                        return error(`The action type of ${runAction.type} is not valid.`);
+                    break;
+                }
+
+                for (var x in responseObj) {
+                    try {
+                        responseObj[x] = JSON.parse(responseObj[x]);
+                    } catch (e) { /* Dumb way of checking if its json. haha */ }
+                } 
+
             }
-
-            for (var x in responseObj) {
-                try {
-                    responseObj[x] = JSON.parse(responseObj[x]);
-                } catch (e) { /* Dumb way of checking if its json. haha */ }
-            } 
-
         }
+        runActions(curAction.actions);
         return good(responseObj);
     });
 }, function(error){
