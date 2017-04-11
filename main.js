@@ -1,17 +1,19 @@
 const bsp = require('bluetooth-serial-port'),
       server = new(bsp).BluetoothSerialPortServer(),
       fs = require('fs'),
-      path = require('path');
+      path = require('path'),
+      execSync = require('child_process').execSync;
 
 console.log('Initializing Rigr Server');
 
 console.log('Reading Action Config...');
 
-var actions = [];
+var actions = {};
 var actionsDir = fs.readdirSync('actions');
-for (var file in actionsDir) {
+for (var x in actionsDir) {
+    var file = actionsDir[x];
     if (path.extname(file) == ".json") {
-        var fileContents = fs.readFileSync(file);
+        var fileContents = fs.readFileSync('actions/'+file);
         try {
             var parsed = JSON.parse(fileContents);
             if (typeof parsed.key !== "undefined") {
@@ -44,15 +46,67 @@ server.listen(function (clientAddress) {
             return error("Could not decode",receivedString);
         }
         
-        
-        return good({msg: "Valid JSON recieved. Do something with it eventually."});
+        // Was an action recieved?
+        if (typeof received.action == "undefined") {
+            return error("No action passed to service.");
+        } 
 
+        // Was the recieved action a valid one?
+        if (typeof actions[receieved.action] == "undefined") {
+            return error(`The action "${recieved.action}" was not valid.`);
+        }
+        
+        // We have an action. Lets act on it.
+        var curAction = actions[received.action];
+
+        if (typeof curAction.actions == "undefined" || !curAction.actions.length) {
+            return error(`This action does not appear to do anything.`, curAction);
+        }
+
+
+        if (typeof curAction.actions == "string" || (typeof curActions.actions == "object" && !Array.isArray(curactions.actions))) {
+            curAction.actions = [ curAction.actions ];  // normalize single-action configs
+        }
+
+        var responseObj = {};
+
+        for (var x in curAction.actions) {
+            var runAction = curAction.actions[x];
+            
+            if (typeof runAction == "string" && typeof actions[runAction] !== "undefined") {
+                runAction = actions[runAction]; // Handle calling other actions by string alone
+            }
+
+            if (typeof runAction.type !== "string") {
+                return error(`An action passed had an invalid type (must be string)`, curAction);
+            } 
+
+            switch (runAction.type) {
+                case "bash":
+                    if (typeof runAction.command !== "string") {
+                        return error(`The command passed was not a string, or no command passed.`,runAction);
+                    }
+                    try {
+                        responseObj[runAction.key] = execSync(runAction.command,{ encoding: 'utf8' });
+                    } catch (e) {
+                        responseObj[runAction.key] = {error: e};
+                    }
+                break;
+                default:
+                    return error(`The action type of ${runAction.type} is not valid.`);
+                break;
+            }
+        }
+        return good(responseObj);
     });
 }, function(error){
 	console.error("Something wrong happened!:" + error);
 },{});
 
 var error = (msg,data) => {
+    if (!data) {
+        data = {};
+    }
     respond({ 
         status: "error",
         msg: msg, 
