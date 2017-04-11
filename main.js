@@ -78,6 +78,7 @@ server.listen(function (clientAddress) {
             }
 
             if (typeof runAction.type !== "string") {
+                console.log(runAction);
                 return error(`An action passed had an invalid type (must be string)`, curAction);
             } 
 
